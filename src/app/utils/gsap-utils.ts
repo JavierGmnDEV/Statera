@@ -53,6 +53,9 @@ export const safeFrom = (
   }
 };
 
+// Definimos un tipo de callback sin argumentos
+type CallbackNoArgs = () => void;
+
 /**
  * Gestiona de forma segura las animaciones en un ScrollTrigger
  */
@@ -64,21 +67,32 @@ export const createSafeScrollTrigger = (
   if (!trigger || !isElementConnected(trigger)) return null;
   
   try {
-    // Crear el ScrollTrigger
-    const st = ScrollTrigger.create({
-      ...scrollTriggerOptions,
-      trigger,
-      onEnter: () => {
-        try {
-          // Solo ejecutar animaciones si el trigger sigue conectado
-          if (isElementConnected(trigger)) {
-            const anims = animations();
-            if (scrollTriggerOptions.onEnter) scrollTriggerOptions.onEnter();
+    // Hacer una copia de las opciones originales
+    const options = { ...scrollTriggerOptions };
+    
+    // Reemplazar el onEnter con nuestra propia implementación
+    const originalOnEnter = options.onEnter;
+    options.onEnter = () => {
+      try {
+        // Solo ejecutar animaciones si el trigger sigue conectado
+        if (isElementConnected(trigger)) {
+          animations(); // Ejecutar las animaciones sin asignar el resultado a una variable
+          
+          // Llamar al onEnter original si existe y es una función
+          if (originalOnEnter && typeof originalOnEnter === 'function') {
+            // ScrollTrigger podría pasar argumentos al callback, pero los ignoramos
+            (originalOnEnter as CallbackNoArgs)();
           }
-        } catch (error) {
-          console.error("Error en onEnter de ScrollTrigger:", error);
         }
+      } catch (error) {
+        console.error("Error en onEnter de ScrollTrigger:", error);
       }
+    };
+    
+    // Crear el ScrollTrigger con las opciones modificadas
+    const st = ScrollTrigger.create({
+      ...options,
+      trigger
     });
     
     return st;
