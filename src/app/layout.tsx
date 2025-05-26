@@ -19,9 +19,6 @@ export const metadata: Metadata = {
   description: "Soluciones de software inteligentes que optimizan procesos y maximizan resultados",
 };
 
-// Componente de cliente para el layout
-import ClientLayout from './client-layout';
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -32,7 +29,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
       >
-        <ClientLayout>{children}</ClientLayout>
+        {children}
       </body>
     </html>
   );

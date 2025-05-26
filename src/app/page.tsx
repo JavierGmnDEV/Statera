@@ -1,40 +1,50 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import ClientLayout from './client-layout';
-import MobileLayout from './mobile-layout';
+import { useEffect } from 'react';
+import SmoothScroll from "./components/SmoothScroll";
+import GSAPProvider from './components/GSAPProvider';
+import Navbar from './components/Navbar';
+import Hero from './components/Hero';
+import Features from './components/Features';
+import About from './components/About';
+import Pricing from './components/Pricing';
+import Contact from './components/Contact';
 
 export default function Home() {
-  const [isMobile, setIsMobile] = useState(false);
-  const [isClient, setIsClient] = useState(false);
-
   useEffect(() => {
-    // Verificar si estamos en el cliente
-    setIsClient(true);
+    // Verificar preferencia del sistema o tema guardado
+    const isDark = 
+      localStorage.getItem('theme') === 'dark' || 
+      (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
     
-    // Función para detectar dispositivo móvil
-    const checkMobile = () => {
-      const userAgent = navigator.userAgent;
-      const mobileRegex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
-      // Considerar también el ancho de pantalla pequeño como móvil
-      const isMobileDevice = mobileRegex.test(userAgent) || window.innerWidth < 768;
-      setIsMobile(isMobileDevice);
-    };
-    
-    // Verificar inicialmente
-    checkMobile();
-    
-    // Actualizar al cambiar el tamaño de ventana
-    window.addEventListener('resize', checkMobile);
-    
-    return () => {
-      window.removeEventListener('resize', checkMobile);
-    };
+    if (isDark) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
   }, []);
 
-  // Mostrar nada hasta que sepamos si estamos en cliente
-  if (!isClient) return null;
-
-  // Renderizar layout basado en dispositivo
-  return isMobile ? <MobileLayout /> : <ClientLayout />;
+  return (
+    <GSAPProvider>
+      <SmoothScroll>
+        <div className="flex min-h-screen flex-col">
+          <Navbar />
+          <main className="flex-1">
+            <Hero />
+            <About />
+            <Features />
+            <Pricing />
+            <Contact />
+          </main>
+          <footer className="bg-muted py-8 border-t border-border">
+            <div className="max-w-7xl mx-auto px-4 text-center">
+              <p className="text-sm text-muted-foreground">
+                © {new Date().getFullYear()} Statera. Todos los derechos reservados.
+              </p>
+            </div>
+          </footer>
+        </div>
+      </SmoothScroll>
+    </GSAPProvider>
+  );
 }

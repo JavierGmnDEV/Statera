@@ -1,15 +1,18 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import MobileMenuHandler from './MobileMenuHandler';
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   // Cerrar el menú cuando se hace clic en un enlace
-  const handleLinkClick = () => {
-    setIsMenuOpen(false);
-  };
+  // Usando useCallback para memoizar la función
+  const handleLinkClick = useCallback(() => {
+    if (isMenuOpen) {
+      setIsMenuOpen(false);
+    }
+  }, [isMenuOpen]);
 
   return (
     <>
