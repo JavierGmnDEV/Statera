@@ -41,7 +41,7 @@ export default function MobileContact() {
         submitted: true,
         loading: false
       }));
-    } catch (error) {
+    } catch {
       setFormState(prev => ({
         ...prev,
         loading: false,
