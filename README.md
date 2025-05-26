@@ -1,3 +1,29 @@
+# Statera
+
+Sitio web empresarial creado con Next.js y optimizado con animaciones GSAP.
+
+## Características
+
+- Diseño responsive adaptado a dispositivos móviles y de escritorio
+- Animaciones suaves y optimizadas usando GSAP
+- Componentes para Landing Page, About, Features, Pricing y Contact
+- Gestión segura de animaciones para evitar errores DOM
+- Implementa lazy loading y optimización de rendimiento
+
+## Tecnologías
+
+- Next.js
+- React
+- GSAP (GreenSock Animation Platform)
+- Tailwind CSS
+
+## Cómo usar
+
+1. Clona el repositorio
+2. Instala las dependencias con `npm install`
+3. Ejecuta el servidor de desarrollo con `npm run dev`
+4. Abre [http://localhost:3000](http://localhost:3000) en tu navegador
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
